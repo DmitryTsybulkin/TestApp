@@ -17,7 +17,9 @@ public class Poll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(name = "start_date")
     private LocalDateTime startDate;
+    @Column(name = "end_date")
     private LocalDateTime endDate;
     private Boolean active;
 

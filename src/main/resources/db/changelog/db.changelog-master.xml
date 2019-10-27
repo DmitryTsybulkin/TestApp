@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-
-    <changeSet id="1" author="Dmitry">
+    
+    <changeSet author="tsydi (generated)" id="1572196922799-1">
+        <createSequence sequenceName="poll_id_seq"/>
+    </changeSet>
+    <changeSet author="tsydi (generated)" id="1572196922799-2">
+        <createSequence sequenceName="question_id_seq"/>
+    </changeSet>
+    <changeSet author="tsydi (generated)" id="1572196922799-3">
         <createTable tableName="poll">
-                <column name="id" type="BIGINT" autoIncrement="true">
-                    <constraints primaryKey="true" nullable="false"/>
-                </column>
-                <column name="name" type="varchar(100)"/>
-                <column name="startDate" type="TIMESTAMP"/>
-                <column name="endDate" type="TIMESTAMP"/>
-                <column name="active" type="BOOLEAN"/>
-        </createTable>
-        <createTable tableName="question">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pk_poll"/>
             </column>
-            <column name="poll_id" type="varchar(100)">
-                <constraints foreignKeyName="fk_quiestions_poll" nullable="false"/>
-            </column>
-                <column name="startDate" type="TIMESTAMP"/>
-                <column name="endDate" type="TIMESTAMP"/>
-                <column name="active" type="BOOLEAN"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="start_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="end_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="active" type="BOOL"/>
         </createTable>
     </changeSet>
-    
+    <changeSet author="tsydi (generated)" id="1572196922799-4">
+        <createTable tableName="question">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pk_question"/>
+            </column>
+            <column name="poll_id" type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="varchar(225)"/>
+            <column name="sort_order" type="SMALLINT"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

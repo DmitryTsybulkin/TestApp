@@ -20,6 +20,7 @@ public class Question {
     @JoinColumn(name = "poll_id", nullable = false)
     private Poll poll;
     private String text;
-    private Integer order;
+    @Column(name = "sort_order")
+    private Integer sortOrder;
 
 }
