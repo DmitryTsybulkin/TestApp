@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PollRepository extends JpaRepository<Poll, Long> {
+    Boolean existsByName(String name);
 }
