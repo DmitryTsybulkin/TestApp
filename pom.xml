@@ -34,6 +34,12 @@
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>3.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.25</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -74,7 +80,7 @@
                 <version>3.4.1</version>
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-                    <changeLogFile>src/main/db/changelog/db.changelog-master.yaml</changeLogFile>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>

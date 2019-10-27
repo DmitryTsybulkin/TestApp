@@ -21,4 +21,10 @@ public class Poll {
     private LocalDateTime endDate;
     private Boolean active;
 
+    public Poll(String name, LocalDateTime startDate, LocalDateTime endDate, Boolean active) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.active = active;
+    }
 }
