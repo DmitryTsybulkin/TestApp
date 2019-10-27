@@ -1,0 +1,49 @@
+- changeSet:
+    id: 1
+    author: Dmitry
+    changes:
+      - createTable:
+          tableName: poll
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: name
+                type: varchar(100)
+            - column:
+                name: startDate
+                type: TIMESTAMP
+            - column:
+                name: endDate
+                type: TIMESTAMP
+            - column:
+                name: active
+                type: BOOLEAN
+      - createTable:
+          tableName: question
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: poll_id
+                type: BIGINT
+                constraints:
+                  nullable: false
+                  foreignKeyName: fk_questions_poll
+                  references: poll(id)
+            - column:
+                name: text
+                type: text
+            - column:
+                name: order
+                type: INTEGER
