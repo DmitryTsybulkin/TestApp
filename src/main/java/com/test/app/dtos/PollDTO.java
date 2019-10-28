@@ -1,25 +1,19 @@
-package com.test.app.entities;
+package com.test.app.dtos;
 
 import lombok.*;
-import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Table
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Poll {
+public class PollDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(name = "start_date")
     private LocalDateTime startDate;
-    @Column(name = "end_date")
     private LocalDateTime endDate;
     private Boolean active;
 

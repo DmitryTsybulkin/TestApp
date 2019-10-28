@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ public class QuestionRepositoryTest {
     private final int sortOrder = 1;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         questionRepository.deleteAll();
         pollRepository.deleteAll();
         poll = pollRepository.save(Poll.builder()
@@ -48,7 +50,7 @@ public class QuestionRepositoryTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         questionRepository.deleteAll();
         pollRepository.deleteAll();
     }
@@ -73,5 +75,12 @@ public class QuestionRepositoryTest {
         Boolean result2 = questionRepository.existsBySortOrderAndPoll(123, poll);
         assertNotNull(result2);
         assertFalse(result2);
+    }
+
+    @Test
+    public void findAllByPoll() {
+        Page<Question> allByPoll = questionRepository.findAllByPoll(Pageable.unpaged(), poll);
+        assertNotNull(allByPoll);
+        assertEquals(1, allByPoll.getNumberOfElements());
     }
 }

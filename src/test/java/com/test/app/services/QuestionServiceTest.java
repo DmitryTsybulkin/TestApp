@@ -15,14 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class QuestionServiceTest {
@@ -100,7 +98,7 @@ public class QuestionServiceTest {
         assertEquals(question.getId(), result.getId());
         assertEquals(question.getText(), result.getText());
         assertEquals(question.getSortOrder(), result.getSortOrder());
-        assertEquals(question.getPoll(), result.getPoll());
+        assertEquals(question.getPoll().getId(), result.getPoll().getId());
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -111,6 +109,13 @@ public class QuestionServiceTest {
     @Test
     public void findAll() {
         Page<Question> all = questionService.findAll(Pageable.unpaged());
+        assertNotNull(all);
+        assertEquals(1, all.getNumberOfElements());
+    }
+
+    @Test
+    public void findAllByPoll() {
+        Page<Question> all = questionService.findAllByPoll(Pageable.unpaged(), poll);
         assertNotNull(all);
         assertEquals(1, all.getNumberOfElements());
     }

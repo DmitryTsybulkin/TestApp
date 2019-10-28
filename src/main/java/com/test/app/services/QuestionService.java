@@ -1,5 +1,6 @@
 package com.test.app.services;
 
+import com.test.app.entities.Poll;
 import com.test.app.entities.Question;
 import com.test.app.excpetions.EntryDuplicateException;
 import com.test.app.excpetions.ResourceNotFoundException;
@@ -39,6 +40,11 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public Page<Question> findAll(Pageable pageable) {
         return questionRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Question> findAllByPoll(Pageable pageable, Poll poll) {
+        return questionRepository.findAllByPoll(pageable, poll);
     }
 
     @Transactional

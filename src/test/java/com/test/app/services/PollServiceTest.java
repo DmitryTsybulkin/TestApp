@@ -13,14 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class PollServiceTest {
@@ -86,7 +84,7 @@ public class PollServiceTest {
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void findByIdNotFound() throws Exception {
+    public void findByIdNotFound() {
         pollService.findById(1000L);
     }
 
