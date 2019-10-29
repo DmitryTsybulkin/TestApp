@@ -96,6 +96,16 @@ public class PollServiceTest {
     }
 
     @Test
+    public void findAllWithParameters() {
+        Page<Poll> all = pollService.findAll(Pageable.unpaged(), poll.getName(), null, null,null);
+        assertNotNull(all);
+        assertEquals(1, all.getNumberOfElements());
+        all = pollService.findAll(Pageable.unpaged(), "poll", null, null,null);
+        assertNotNull(all);
+        assertEquals(0, all.getNumberOfElements());
+    }
+
+    @Test
     public void update() {
         Poll origin = Poll.builder()
                 .id(poll.getId())

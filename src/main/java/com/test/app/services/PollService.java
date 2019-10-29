@@ -8,15 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -51,10 +48,10 @@ public class PollService {
 
     @Transactional(readOnly = true)
     public Page<Poll> findAll(Pageable pageable,
-                              String name,
-                              Boolean active,
-                              LocalDateTime startDate,
-                              LocalDateTime endDate) {
+                              @Nullable String name,
+                              @Nullable Boolean active,
+                              @Nullable LocalDateTime startDate,
+                              @Nullable LocalDateTime endDate) {
         List<Poll> polls = pollRepository.findAll().stream()
                 .filter(poll -> (name != null && poll.getName().equals(name)))
                 .filter(poll -> (active != null && poll.getActive().equals(active)))
@@ -64,10 +61,13 @@ public class PollService {
                     } if (startDate != null) {
                         return poll.getStartDate().isAfter(startDate);
                     } else {
-                        return poll.getEndDate().isBefore(endDate);
+                        if (endDate != null) {
+                            return poll.getEndDate().isBefore(endDate);
+                        }
                     }
+                    return true;
                 }).collect(toList());
-        return new PageImpl<>(polls, pageable, polls.size())
+        return new PageImpl<>(polls, pageable, polls.size());
     }
 
     @Transactional
