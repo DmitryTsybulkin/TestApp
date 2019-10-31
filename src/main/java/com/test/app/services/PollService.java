@@ -6,16 +6,10 @@ import com.test.app.excpetions.ResourceNotFoundException;
 import com.test.app.repositories.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class PollService {
@@ -38,7 +32,7 @@ public class PollService {
     @Transactional(readOnly = true)
     public Poll findById(Long id) {
         return pollRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Опрос по id: " + id + "не найден"));
+                new ResourceNotFoundException("Опрос по id: " + id + " не найден"));
     }
 
     @Transactional(readOnly = true)
@@ -47,27 +41,8 @@ public class PollService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Poll> findAll(Pageable pageable,
-                              @Nullable String name,
-                              @Nullable Boolean active,
-                              @Nullable LocalDateTime startDate,
-                              @Nullable LocalDateTime endDate) {
-        List<Poll> polls = pollRepository.findAll().stream()
-                .filter(poll -> (name != null && poll.getName().equals(name)))
-                .filter(poll -> (active != null && poll.getActive().equals(active)))
-                .filter(poll -> {
-                    if (startDate != null && endDate != null) {
-                        return poll.getStartDate().isAfter(startDate) && poll.getEndDate().isBefore(endDate);
-                    } if (startDate != null) {
-                        return poll.getStartDate().isAfter(startDate);
-                    } else {
-                        if (endDate != null) {
-                            return poll.getEndDate().isBefore(endDate);
-                        }
-                    }
-                    return true;
-                }).collect(toList());
-        return new PageImpl<>(polls, pageable, polls.size());
+    public Page<Poll> findAll(Pageable pageable, Specification<Poll> specification) {
+        return pollRepository.findAll(specification, pageable);
     }
 
     @Transactional

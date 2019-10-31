@@ -22,26 +22,32 @@ public class QuestionController {
 
     @PostMapping("/questions/create")
     @ApiOperation("Создать новый вопрос")
-    public QuestionDTO createPoll(@RequestBody QuestionDTO dto) {
+    public QuestionDTO createQuestion(@RequestBody QuestionDTO dto) {
         return questionRepresentation.createQuestion(dto);
     }
 
+    @GetMapping("/questions/{id}")
+    @ApiOperation("Поиск вопроса по id")
+    public QuestionDTO findQuestionById(@PathVariable Long id) {
+        return questionRepresentation.findQuestionById(id);
+    }
+
     @GetMapping("/questions")
-    @ApiOperation("Поиск всех вопросов ил по параметрам")
-    public Page<QuestionDTO> findAllPolls(@RequestParam Pageable pageable) {
+    @ApiOperation("Поиск всех вопросов или по параметрам")
+    public Page<QuestionDTO> findAllQuestions(@RequestParam Pageable pageable) {
         return questionRepresentation.findAllQuestions(pageable);
     }
 
     @ApiOperation("Обновить существующий вопрос")
     @PatchMapping("/questions/{id}/update")
-    public QuestionDTO updatePoll(@PathVariable Long id, @RequestBody QuestionDTO dto) {
+    public QuestionDTO updateQuestion(@PathVariable Long id, @RequestBody QuestionDTO dto) {
         dto.setId(id);
         return questionRepresentation.updateQuestion(dto);
     }
 
     @ApiOperation("Удалить вопрос")
     @DeleteMapping("/questions/{id}/delete")
-    public void deletePoll(@PathVariable Long id) {
+    public void deleteQuestion(@PathVariable Long id) {
         questionRepresentation.deleteQuestionById(id);
     }
 

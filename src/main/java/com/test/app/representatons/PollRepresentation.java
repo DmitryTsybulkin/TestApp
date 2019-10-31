@@ -6,9 +6,8 @@ import com.test.app.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 public class PollRepresentation {
@@ -32,12 +31,8 @@ public class PollRepresentation {
         return pollService.findAll(pageable).map(this::toDto);
     }
 
-    public Page<PollDTO> findAllPolls(Pageable pageable,
-                                      String name,
-                                      Boolean active,
-                                      LocalDateTime startDate,
-                                      LocalDateTime endDate) {
-        return pollService.findAll(pageable, name, active, startDate, endDate).map(this::toDto);
+    public Page<PollDTO> findAllPolls(Pageable pageable, Specification<Poll> specification) {
+        return pollService.findAll(pageable, specification).map(this::toDto);
     }
 
     public PollDTO updatePoll(PollDTO dto) {

@@ -26,4 +26,11 @@ public class ExceptionController {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.name(), e.getLocalizedMessage());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO illegalStateExceptionHandler(Exception e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.name(), e.getLocalizedMessage());
+    }
+
 }

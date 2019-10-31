@@ -34,7 +34,7 @@ public class QuestionService {
 
     @Transactional(readOnly = true)
     public Question findById(Long id) {
-        return questionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Вопрос по id: " + id + "не найден"));
+        return questionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Вопрос по id: " + id + " не найден"));
     }
 
     @Transactional(readOnly = true)
