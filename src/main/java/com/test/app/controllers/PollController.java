@@ -64,13 +64,13 @@ public class PollController {
         return questionRepresentation.findAllQuestionsByPollId(pageable, id);
     }
 
-    @PatchMapping(value = "/polls/{id}/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/polls/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PollDTO updatePoll(@PathVariable Long id, @RequestBody PollDTO dto) {
         dto.setId(id);
         return pollRepresentation.updatePoll(dto);
     }
 
-    @DeleteMapping("/polls/{id}/delete")
+    @DeleteMapping("/polls/{id}")
     public void deletePoll(@PathVariable Long id) {
         pollRepresentation.deletePollById(id);
     }

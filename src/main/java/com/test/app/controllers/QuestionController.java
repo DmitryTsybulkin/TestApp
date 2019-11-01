@@ -1,8 +1,11 @@
 package com.test.app.controllers;
 
+import com.test.app.ApiPageable;
 import com.test.app.dtos.QuestionDTO;
 import com.test.app.representatons.QuestionRepresentation;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,7 @@ public class QuestionController {
         return questionRepresentation.findQuestionById(id);
     }
 
+    @ApiPageable
     @GetMapping("/questions")
     @ApiOperation("Поиск всех вопросов или по параметрам")
     public Page<QuestionDTO> findAllQuestions(@RequestParam Pageable pageable) {
