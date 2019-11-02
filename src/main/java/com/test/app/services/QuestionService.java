@@ -6,10 +6,10 @@ import com.test.app.excpetions.EntryDuplicateException;
 import com.test.app.excpetions.ResourceNotFoundException;
 import com.test.app.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class QuestionService {
@@ -38,13 +38,13 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Question> findAll(Pageable pageable) {
-        return questionRepository.findAll(pageable);
+    public List<Question> findAll() {
+        return questionRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Page<Question> findAllByPoll(Pageable pageable, Poll poll) {
-        return questionRepository.findAllByPoll(pageable, poll);
+    public List<Question> findAllByPoll(Poll poll) {
+        return questionRepository.findAllByPoll(poll);
     }
 
     @Transactional

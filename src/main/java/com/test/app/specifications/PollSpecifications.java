@@ -1,4 +1,4 @@
-package com.test.app;
+package com.test.app.specifications;
 
 import com.test.app.entities.Poll;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +19,7 @@ public class PollSpecifications {
         @Override
         public Predicate toPredicate(Root<Poll> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
             if (name == null) {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(false));
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
             }
             return criteriaBuilder.equal(root.get("name"), this.name);
         }
@@ -33,9 +33,9 @@ public class PollSpecifications {
         @Override
         public Predicate toPredicate(Root<Poll> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
             if (startDate == null) {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(false));
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
             }
-            return criteriaBuilder.lessThan(root.get("startDate"), this.startDate);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), this.startDate);
         }
     }
 
@@ -47,9 +47,9 @@ public class PollSpecifications {
         @Override
         public Predicate toPredicate(Root<Poll> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
             if (endDate == null) {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(false));
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
             }
-            return criteriaBuilder.greaterThan(root.get("endDate"), this.endDate);
+            return criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), this.endDate);
         }
     }
 
@@ -61,7 +61,7 @@ public class PollSpecifications {
         @Override
         public Predicate toPredicate(Root<Poll> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
             if (active == null) {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(false));
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
             }
             return criteriaBuilder.equal(root.get("active"), this.active);
         }

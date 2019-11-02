@@ -12,11 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -108,16 +107,16 @@ public class QuestionServiceTest {
 
     @Test
     public void findAll() {
-        Page<Question> all = questionService.findAll(Pageable.unpaged());
+        List<Question> all = questionService.findAll();
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
     }
 
     @Test
     public void findAllByPoll() {
-        Page<Question> all = questionService.findAllByPoll(Pageable.unpaged(), poll);
+        List<Question> all = questionService.findAllByPoll(poll);
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
     }
 
     @Test

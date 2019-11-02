@@ -1,6 +1,6 @@
 package com.test.app.controllers;
 
-import com.test.app.PollSpecifications;
+import com.test.app.specifications.PollSpecifications;
 import com.test.app.dtos.PollDTO;
 import com.test.app.dtos.QuestionDTO;
 import com.test.app.entities.Poll;
@@ -8,14 +8,14 @@ import com.test.app.representatons.PollRepresentation;
 import com.test.app.representatons.QuestionRepresentation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Api
 @RestController
@@ -44,24 +44,24 @@ public class PollController {
     }
 
     @GetMapping(value = "/polls", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("Поиск всех опросов или по параметрам")
-    public Page<PollDTO> findAllPolls(@RequestParam Pageable pageable,
-                                      @RequestParam(required = false) String name,
-                                      @RequestParam(required = false) Boolean active,
-                                      @RequestParam(name = "from", required = false) LocalDateTime startDate,
-                                      @RequestParam(name = "to", required = false) LocalDateTime endDate) {
+    @ApiOperation(value = "Поиск всех опросов или по параметрам", produces = "application/json")
+    public List<PollDTO> findAllPolls(@ApiParam @RequestParam(required = false) String name,
+                                      @ApiParam @RequestParam(required = false) String active,
+                                      @ApiParam(format = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                                          @RequestParam(required = false) String startDate,
+                                      @ApiParam(format = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                                          @RequestParam(required = false) String endDate) {
         Specification<Poll> specification = Specification.where(new PollSpecifications.PollWithName(name))
-                .and(new PollSpecifications.PollWithActive(active))
-                .and(new PollSpecifications.PollWithStartDate(startDate))
-                .and(new PollSpecifications.PollWithEndDate(endDate));
-        return pollRepresentation.findAllPolls(pageable, specification);
+                .and(new PollSpecifications.PollWithActive(active != null ? Boolean.valueOf(active) : null))
+                .and(new PollSpecifications.PollWithStartDate(startDate != null ? LocalDateTime.parse(startDate) : null))
+                .and(new PollSpecifications.PollWithEndDate(endDate != null ? LocalDateTime.parse(endDate) : null));
+        return pollRepresentation.findAllPolls(specification);
     }
 
     @GetMapping(value = "/polls/{id}/questions", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Поиск всех опросов ил по параметрам")
-    public Page<QuestionDTO> findQuestionsByPoll(@PathVariable Long id,
-                                                 @RequestParam Pageable pageable) {
-        return questionRepresentation.findAllQuestionsByPollId(pageable, id);
+    public List<QuestionDTO> findQuestionsByPoll(@PathVariable Long id) {
+        return questionRepresentation.findAllQuestionsByPollId(id);
     }
 
     @PatchMapping(value = "/polls/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -5,9 +5,10 @@ import com.test.app.entities.Question;
 import com.test.app.services.PollService;
 import com.test.app.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class QuestionRepresentation {
@@ -29,12 +30,12 @@ public class QuestionRepresentation {
         return toDto(questionService.findById(id));
     }
 
-    public Page<QuestionDTO> findAllQuestionsByPollId(Pageable pageable, Long pollId) {
-        return questionService.findAllByPoll(pageable, pollService.findById(pollId)).map(this::toDto);
+    public List<QuestionDTO> findAllQuestionsByPollId(Long pollId) {
+        return questionService.findAllByPoll(pollService.findById(pollId)).stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public Page<QuestionDTO> findAllQuestions(Pageable pageable) {
-        return questionService.findAll(pageable).map(this::toDto);
+    public List<QuestionDTO> findAllQuestions() {
+        return questionService.findAll().stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public QuestionDTO updateQuestion(QuestionDTO dto) {

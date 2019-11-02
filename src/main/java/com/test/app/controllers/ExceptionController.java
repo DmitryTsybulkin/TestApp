@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.format.DateTimeParseException;
+
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -20,7 +22,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(EntryDuplicateException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ErrorDTO entryDuplicateExceptionHandler(Exception e) {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.name(), e.getLocalizedMessage());
@@ -30,6 +32,13 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorDTO illegalStateExceptionHandler(Exception e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.name(), e.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO dateTimeParseExceptionHandler(Exception e) {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.name(), e.getLocalizedMessage());
     }
 
