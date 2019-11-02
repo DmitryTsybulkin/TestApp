@@ -4,9 +4,11 @@ import com.test.app.dtos.PollDTO;
 import com.test.app.entities.Poll;
 import com.test.app.services.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PollRepresentation {
@@ -26,8 +28,12 @@ public class PollRepresentation {
         return toDto(pollService.findById(id));
     }
 
-    public Page<PollDTO> findAllPolls(Pageable pageable) {
-        return pollService.findAll(pageable).map(this::toDto);
+    public List<PollDTO> findAllPolls() {
+        return pollService.findAll().stream().map(this::toDto).collect(Collectors.toList());
+    }
+
+    public List<PollDTO> findAllPolls(Specification<Poll> specification) {
+        return pollService.findAll(specification).stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public PollDTO updatePoll(PollDTO dto) {

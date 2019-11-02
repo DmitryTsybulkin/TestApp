@@ -10,13 +10,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -87,11 +85,10 @@ public class PollRepresentationTest {
 
     @Test
     public void findAllPolls() {
-        Mockito.when(pollService.findAll(Pageable.unpaged()))
-                .thenReturn(new PageImpl<>(Collections.singletonList(poll)));
-        Page<PollDTO> all = pollRepresentation.findAllPolls(Pageable.unpaged());
+        Mockito.when(pollService.findAll()).thenReturn(Collections.singletonList(poll));
+        List<PollDTO> all = pollRepresentation.findAllPolls();
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
     }
 
     @Test

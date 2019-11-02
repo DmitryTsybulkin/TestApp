@@ -1,5 +1,6 @@
 package com.test.app.services;
 
+import com.test.app.specifications.PollSpecifications;
 import com.test.app.entities.Poll;
 import com.test.app.excpetions.EntryDuplicateException;
 import com.test.app.excpetions.ResourceNotFoundException;
@@ -10,11 +11,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -90,9 +91,34 @@ public class PollServiceTest {
 
     @Test
     public void findAll() {
-        Page<Poll> all = pollService.findAll(Pageable.unpaged());
+        List<Poll> all = pollService.findAll();
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
+    }
+
+    @Test
+    public void findAllWithParameters() {
+        pollService.create(Poll.builder().active(true).name("name")
+                .startDate(LocalDateTime.now().minusDays(2)).endDate(LocalDateTime.now().plusDays(2)).build());
+        pollService.create(Poll.builder().active(false).name("test")
+                .startDate(LocalDateTime.now().minusDays(5)).endDate(LocalDateTime.now().minusDays(1)).build());
+        Specification<Poll> specification = Specification.where(new PollSpecifications.PollWithName("name"));
+        List<Poll> all = pollService.findAll(specification);
+        assertNotNull(all);
+        assertEquals(1, all.size());
+        all = pollService.findAll(Specification.where(new PollSpecifications.PollWithName("nonexistent")));
+        assertNotNull(all);
+        assertEquals(0, all.size());
+        all = pollService.findAll(Specification.where(new PollSpecifications.PollWithEndDate(LocalDateTime.now())));
+        assertNotNull(all);
+        assertEquals(1, all.size());
+        all = pollService.findAll(Specification
+                .where(new PollSpecifications.PollWithStartDate(LocalDateTime.now().minusDays(3))));
+        assertNotNull(all);
+        assertEquals(2, all.size());
+        all = pollService.findAll(Specification.where(new PollSpecifications.PollWithActive(true)));
+        assertNotNull(all);
+        assertEquals(2, all.size());
     }
 
     @Test

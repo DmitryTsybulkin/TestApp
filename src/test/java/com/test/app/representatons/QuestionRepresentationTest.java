@@ -12,17 +12,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ContextConfiguration(classes = QuestionRepresentation.class)
 @RunWith(MockitoJUnitRunner.class)
@@ -92,21 +91,19 @@ public class QuestionRepresentationTest {
 
     @Test
     public void findAllQuestionsByPollId() {
-        Mockito.when(questionService.findAllByPoll(eq(Pageable.unpaged()), any(Poll.class)))
-                .thenReturn(new PageImpl<>(Collections.singletonList(question)));
+        Mockito.when(questionService.findAllByPoll(any(Poll.class))).thenReturn(Collections.singletonList(question));
         Mockito.when(pollService.findById(anyLong())).thenReturn(poll);
-        Page<QuestionDTO> all = questionRepresentation.findAllQuestionsByPollId(Pageable.unpaged(), poll.getId());
+        List<QuestionDTO> all = questionRepresentation.findAllQuestionsByPollId(poll.getId());
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
     }
 
     @Test
     public void findAllQuestions() {
-        Mockito.when(questionService.findAll(Pageable.unpaged()))
-                .thenReturn(new PageImpl<>(Collections.singletonList(question)));
-        Page<QuestionDTO> all = questionRepresentation.findAllQuestions(Pageable.unpaged());
+        Mockito.when(questionService.findAll()).thenReturn(Collections.singletonList(question));
+        List<QuestionDTO> all = questionRepresentation.findAllQuestions();
         assertNotNull(all);
-        assertEquals(1, all.getNumberOfElements());
+        assertEquals(1, all.size());
     }
 
     @Test

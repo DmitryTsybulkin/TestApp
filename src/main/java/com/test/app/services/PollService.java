@@ -5,10 +5,11 @@ import com.test.app.excpetions.EntryDuplicateException;
 import com.test.app.excpetions.ResourceNotFoundException;
 import com.test.app.repositories.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class PollService {
@@ -31,12 +32,17 @@ public class PollService {
     @Transactional(readOnly = true)
     public Poll findById(Long id) {
         return pollRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Опрос по id: " + id + "не найден"));
+                new ResourceNotFoundException("Опрос по id: " + id + " не найден"));
     }
 
     @Transactional(readOnly = true)
-    public Page<Poll> findAll(Pageable pageable) {
-        return pollRepository.findAll(pageable);
+    public List<Poll> findAll() {
+        return pollRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Poll> findAll(Specification<Poll> specification) {
+        return pollRepository.findAll(specification);
     }
 
     @Transactional

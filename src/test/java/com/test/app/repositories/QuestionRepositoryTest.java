@@ -8,12 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -79,8 +78,8 @@ public class QuestionRepositoryTest {
 
     @Test
     public void findAllByPoll() {
-        Page<Question> allByPoll = questionRepository.findAllByPoll(Pageable.unpaged(), poll);
+        List<Question> allByPoll = questionRepository.findAllByPoll(poll);
         assertNotNull(allByPoll);
-        assertEquals(1, allByPoll.getNumberOfElements());
+        assertEquals(1, allByPoll.size());
     }
 }

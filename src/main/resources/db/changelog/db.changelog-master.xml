@@ -29,5 +29,34 @@
             <column name="text" type="varchar(225)"/>
             <column name="sort_order" type="SMALLINT"/>
         </createTable>
+        <sql>
+            insert into poll (name, start_date, end_date, active)
+            values ('Важен ли github аккаунт', '2019-10-01 12:00:000', '2019-10-31 12:00:000', true);
+            insert into poll (name, start_date, end_date, active)
+            values ('Использование акций в магазинах', '2019-10-10 09:00:000', '2019-11-05 12:00:000', true);
+            insert into poll (name, start_date, end_date, active)
+            values ('IT Конференции', '2019-05-10 12:00:000', '2019-08-10 12:00:000', false);
+
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Важен ли github аккаунт'), 'Есть ли у вас github аккаунт?', 1);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Важен ли github аккаунт'), 'Выкладываете ли вы туда свои проекты?', 2);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Важен ли github аккаунт'), 'Хотели бы, чтобы вас оценивали по проектам на github?', 3);
+
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Использование акций в магазинах'), 'Какое у вас отношение к специальным акциям?', 1);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Использование акций в магазинах'), 'Вы следите за акциями, проходящими в разных супермаркетах?', 2);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='Использование акций в магазинах'), 'Хотели бы вы получать уведомления об акциях от нашей торговой сети?', 3);
+
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='IT Конференции'), 'Посещаете ли вы IT конференции?', 1);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='IT Конференции'), 'Выступаете ли вы на IT конференциях?', 2);
+            insert into question (poll_id, text, sort_order)
+            values ((select id from poll where name='IT Конференции'), 'Что вы можете сказать о последней IT конференции, на которой были?', 3);
+        </sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,6 +1,7 @@
 package com.test.app.entities;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
